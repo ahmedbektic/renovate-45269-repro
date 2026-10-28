@@ -45,3 +45,18 @@ All runs extracted four dependencies from three files, retained `skipReason: inv
 Count exact JSON `msg` values; do not count substring matches elsewhere in configuration dumps. These results demonstrate this unversioned-tag path, not valid-version update generation.
 
 For hosted GitHub testing, supply a suitable token through `RENOVATE_TOKEN` without printing it, and run the same source with `--platform=github --dry-run=lookup --onboarding=false ahmedbektic/renovate-45269-repro`. Never put credentials in command arguments or repository files.
+
+## Verified hosted GitHub results
+
+The actual source entry points at the same baseline and patched revisions were also run against this public repository using `--platform=github --dry-run=lookup --onboarding=false ahmedbektic/renovate-45269-repro`. Authentication was supplied only through the process environment. Each run used a fresh `RENOVATE_BASE_DIR` outside the repositories.
+
+| Exact DEBUG message | GitHub baseline | GitHub patched run 1 | GitHub patched run 2 |
+| --- | ---: | ---: | ---: |
+| `Skipping node because no currentDigest or pinDigests` | 3 | 1 | 1 |
+| `Skipping redis because no currentDigest or pinDigests` | 1 | 1 | 1 |
+
+The hosted runs cloned the repository, extracted the same four dependencies, and produced dependency-result objects identical to the local baseline: four `invalid-value` skips, no updates, and no dependency warnings. Each run had zero ERROR logs and one unrelated global WARN about Renovate's default Git author email. That warning occurred on both baseline and patched source.
+
+Git refs and the complete issue/PR listing were identical before and after all hosted dry runs. Publishing this fixture and documentation was a separate, intentional Git operation; Renovate created no branches, commits, issues, or PRs.
+
+The baseline is the direct parent of the fix, not a different released Renovate version. No source code was overwritten to obtain these comparisons. Raw logs and caches are deliberately not committed.
