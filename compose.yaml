@@ -1,0 +1,5 @@
+services:
+  app:
+    image: node:alpine
+  cache:
+    image: redis:alpine
